@@ -1,0 +1,686 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Análisis de datos: Análisis de calidad del aire</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(249, 228, 188, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="626eb5ca-2609-4553-9fea-c9a67b44503b" class="page sans"><header><h1 class="page-title">Análisis de datos: Análisis de calidad del aire</h1><p class="page-description"></p></header><div class="page-body"><h1 id="c1e53c3b-5407-4561-8303-7b53d4ad0d09" class="">Introducción</h1><p id="f337cbc5-ab1f-44fb-b823-066b4365b0de" class="">El informe inicia detallando el proceso de instalación y carga de paquetes y librerías pertinentes para el análisis de datos, seguido por la importación del archivo de datos &quot;airq_dt.csv&quot;. Después, se realiza una fase de limpieza de datos que abarca un diagnóstico de los tipos de datos presentes, así como la identificación y tratamiento de valores faltantes mediante el método de imputación PMM.<br/>En el análisis, se hace un estudio exhaustivo de las variables, comenzando por las de carácter categórico (mes y día), seguido por un análisis detallado de las variables numéricas, incluyendo un resumen estadístico y un diagnóstico de valores faltantes. Se explora la distribución de las variables cuantitativas mediante enfoques gráficos (histogramas, gráficos de distribución de probabilidad normal) y estadísticos (pruebas de normalidad, cálculos de asimetría y curtosis).<br/>Adicionalmente, se aborda el análisis de valores atípicos a través de la presentación de tablas, gráficos de caja y la aplicación del método de Tukey. Posteriormente, se realiza un análisis de la covarianza y el coeficiente de correlación entre las variables utilizando diversos métodos (Pearson, Spearman, Kendall), seguido por la construcción de una matriz de correlación.<br/>Finalmente, se presenta un resumen integral de los resultados obtenidos en cada etapa del análisis, incluyendo los descubrimientos sobre la normalidad, asimetría, curtosis, valores atípicos y correlaciones entre las variables. El informe proporciona una visión completa del proceso de análisis de datos y los resultados obtenidos, permitiendo una comprensión profunda de la estructura y las relaciones presentes en el conjunto de datos.<br/></p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Tipos de datos</summary><div class="indented"><p id="d662986f-3ce4-434a-94f8-b4a6f9c08387" class="">Las columnas corresponden a la medición de ozono, la radiación solar, el viento, la temperatura; y el mes y día de la medición.</p><p id="504220de-3d4c-4b51-9e1a-b8828ffcb999" class="">Se presume que sus unidades de medida son las siguientes:</p><ul id="36ecb91c-b4dc-4bcd-965a-e4ec51b1d3fa" class="bulleted-list"><li style="list-style-type:disc">Ozono: µg/m³</li></ul><ul id="8b8f248e-13bc-43ea-89da-dbf3c7f689ec" class="bulleted-list"><li style="list-style-type:disc">RadSol: MJ/m²</li></ul><ul id="4e11b4a6-cd8d-45f4-8a41-f272d13cd5a4" class="bulleted-list"><li style="list-style-type:disc">Viento: kt (nudos)</li></ul><ul id="3ecdef28-57b2-4945-b6ed-69da80968ce4" class="bulleted-list"><li style="list-style-type:disc">Temp: °F</li></ul><table id="2c809434-c10f-4693-85fa-282a2a859e70" class="simple-table"><thead class="simple-table-header"><tr id="bbd6ba01-7f3e-4512-93bd-f7a9308ac61d"><th id="feAe" class="simple-table-header-color simple-table-header" style="width:523px"><strong>Dato</strong></th><th id="YEXZ" class="simple-table-header-color simple-table-header" style="width:523px"><strong>Tipo de dato</strong></th></tr></thead><tbody><tr id="efdd9a55-2e0e-4499-a457-294987654656"><th id="feAe" class="simple-table-header-color simple-table-header" style="width:523px">Ozono</th><td id="YEXZ" class="" style="width:523px">col_double()</td></tr><tr id="85c1a133-559d-49a2-af7a-0e1cb12a8bbe"><th id="feAe" class="simple-table-header-color simple-table-header" style="width:523px">RadSol</th><td id="YEXZ" class="" style="width:523px">col_double()</td></tr><tr id="aacead7f-ba5b-4e31-bc29-da82cdd51a14"><th id="feAe" class="simple-table-header-color simple-table-header" style="width:523px">Vient</th><td id="YEXZ" class="" style="width:523px">col_double()</td></tr><tr id="6fbbf45b-e08f-4d71-94c7-9b122b88bff0"><th id="feAe" class="simple-table-header-color simple-table-header" style="width:523px">Temp</th><td id="YEXZ" class="" style="width:523px">col_double()</td></tr><tr id="e74b9c73-adfe-4e22-a9c5-c35bed094cfa"><th id="feAe" class="simple-table-header-color simple-table-header" style="width:523px">Mes</th><td id="YEXZ" class="" style="width:523px">col_double()</td></tr><tr id="f77d26aa-9b76-413e-8c72-8f6dc970cf0f"><th id="feAe" class="simple-table-header-color simple-table-header" style="width:523px">Dia</th><td id="YEXZ" class="" style="width:523px">col_double()</td></tr></tbody></table></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Limpieza de datos</summary><div class="indented"><p id="78a45b4e-f7ef-4483-8de6-d1c84e9b7851" class="">En la vista previa se pueden apreciar valores faltantes (denotados como NA en el dataframe). Para visualizar los datos faltantes, se ejecuta el comando visdat::vis_dat(calidadaire,sort_type = FALSE), resultando el siguiente gráfico:</p><figure id="3e0224c2-444a-446f-a74b-7473e81fb87d" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image.png"><img style="width:1064px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image.png"/></a></figure><p id="8cac10e3-95d8-4de2-b7b9-8e2bee101356" class="">En el cual se pueden apreciar los valores faltantes en el dataframe.<br/>La procedencia de los datos es una fuente de información secundaria, por lo que se desconoce la causa de los valores faltantes. Esto imposibilita también la validación de los datos y la generación de nuevas muestras de datos; por lo que se procede a imputar los datos faltantes.<br/></p><p id="458be1f0-e14b-442f-b8e8-2216eea2a297" class="">Se utiliza el método PMM (Predictive Mean Matching) para imputar los datos faltantes, que consiste en estimar mediante un modelo predictivo valores estimados para que coincidan con las características estadísticas del conjunto de datos original.</p><p id="4a5a6c40-bd57-491c-b5c6-48b40cbd4e05" class="">Habiendo limpiado los datos, se procede a hacer el análisis de los datos.</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Estudio de variables</summary><div class="indented"><p id="84c97beb-fe31-4a1e-bdcb-f3a289086d1a" class="">La mayor parte de los datos corresponden a mediciones de datos atmosféricos. Las únicas variables categóricas que se puede identificar son las correspondiente a la fecha en que se realizó la medición.</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Distribución de variables cuantitativas</summary><div class="indented"><p id="92da29d9-3715-40d2-9c30-35b46d25a581" class="">Se analizará la distribución de datos a partir del método gráfico y método matemático de las variables cuantitativas.</p><div id="bd191476-0c57-46d3-aa1d-04cc53daa2ae" class="column-list"><div id="e6ec2d52-6902-4f50-8cf9-c5d9240ea2b5" style="width:100%" class="column"><figure id="c2f74756-97ff-4cba-9e01-63eecb9c03bd" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%201.png"><img style="width:687px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%201.png"/></a></figure><figure id="d78add37-aa9b-4574-8065-2599480207d2" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%202.png"><img style="width:509px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%202.png"/></a></figure></div><div id="fca3681d-dbc0-49fd-ae44-5088197a1238" style="width:100%" class="column"><figure id="93994da9-2408-440e-9c42-7a5a2b67e418" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%203.png"><img style="width:509px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%203.png"/></a></figure><figure id="e1ca71ac-fad4-47aa-9ffa-f0f3ee3bbd04" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%204.png"><img style="width:509px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%204.png"/></a></figure></div></div><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Simetría</summary><div class="indented"><p id="a7662cf9-8e5b-4118-9c09-b9f98b69db0c" class="">Al histograma previamente generado, se agrega la línea de distribución, para corroborar visualmente la simetría de los datos.</p><h3 id="fb857bb1-d212-41a8-bac9-3e3cc412b1f6" class="">Método gráfico</h3><div id="8dd782d2-24bf-40d6-9e2d-cf026e1a0caf" class="column-list"><div id="c325dc65-4d3d-4679-ab8a-93ffeef3a36e" style="width:100%" class="column"><figure id="abf3ceb0-35be-45a7-8a8f-7409545ac903" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%205.png"><img style="width:509px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%205.png"/></a></figure><figure id="3aedfc3a-6a00-4bf8-8da2-c598dcaef227" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%206.png"><img style="width:509px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%206.png"/></a></figure></div><div id="f1678634-e02d-48b2-a0a0-f4baf41a3de5" style="width:100%" class="column"><figure id="bbea2dfa-6238-49c9-bf92-70f8930e86c1" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%207.png"><img style="width:782px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%207.png"/></a></figure><figure id="71bf8f6e-1535-4b55-99c2-ade70fbc7a33" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%208.png"><img style="width:780px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%208.png"/></a></figure></div></div><h3 id="958dc0f8-6f7f-4fce-80a4-14e2e6586b3e" class="">Método matemático</h3><h3 id="b67550b7-ae99-4b87-b604-47472b912d54" class="">Normalidad</h3><p id="65c3c7da-5e23-4bf3-87f7-ee367b11892b" class="">Se formula la hipótesis nula y la alternativa, para corroborar la normalidad de los datos.</p><ul id="c03284c1-0139-4031-88ac-498d15cd80ff" class="bulleted-list"><li style="list-style-type:disc"><strong>Hipótesis</strong> <strong>nula (H0):</strong> La variable sigue una distribución normal.</li></ul><ul id="0db55cc6-06cc-4c5c-b98e-2253dfb0e5cc" class="bulleted-list"><li style="list-style-type:disc"><strong>Hipótesis alternativa (H1): </strong>La variable no sigue una distribución normal.</li></ul><table id="c8d28e76-2427-47b7-a4e0-35fa8039ecc6" class="simple-table"><thead class="simple-table-header"><tr id="c8457ea5-51bd-4ff7-b7ae-562ea206c388"><th id="G|tp" class="simple-table-header-color simple-table-header" style="width:203.6px"><strong>vars</strong></th><th id="t&gt;Nd" class="simple-table-header-color simple-table-header" style="width:203.6px"><strong>statistic</strong></th><th id="XA~_" class="simple-table-header-color simple-table-header" style="width:203.6px"><strong>p_value</strong></th><th id="eq;~" class="simple-table-header-color simple-table-header" style="width:203.6px"><strong>sample</strong></th><th id="ci\w" class="simple-table-header-color simple-table-header" style="width:203.6px"><strong>H0</strong></th></tr></thead><tbody><tr id="9615c6e2-e4ef-4f67-9a75-f2226e3beb69"><th id="G|tp" class="simple-table-header-color simple-table-header" style="width:203.6px"><strong>Ozono</strong></th><td id="t&gt;Nd" class="" style="width:203.6px">0.8595437</td><td id="XA~_" class="" style="width:203.6px">0.00000002715341</td><td id="eq;~" class="" style="width:203.6px">100</td><td id="ci\w" class="" style="width:203.6px">Rechaza</td></tr><tr id="25363780-8f62-49fa-a035-145010ba7bf5"><th id="G|tp" class="simple-table-header-color simple-table-header" style="width:203.6px"><strong>RadSol</strong></th><td id="t&gt;Nd" class="" style="width:203.6px">0.9319634</td><td id="XA~_" class="" style="width:203.6px">0.00006443429561</td><td id="eq;~" class="" style="width:203.6px">100</td><td id="ci\w" class="" style="width:203.6px">Rechaza</td></tr><tr id="60d87eb4-1acf-4293-a08b-2b0be63c6f9d"><th id="G|tp" class="simple-table-header-color simple-table-header" style="width:203.6px"><strong>Vient</strong></th><td id="t&gt;Nd" class="" style="width:203.6px">0.9833954</td><td id="XA~_" class="" style="width:203.6px">0.24199785241031</td><td id="eq;~" class="" style="width:203.6px">100</td><td id="ci\w" class="" style="width:203.6px">Aprueba</td></tr><tr id="9849b325-80c5-4049-a457-64194584fd5c"><th id="G|tp" class="simple-table-header-color simple-table-header" style="width:203.6px"><strong>Temp</strong></th><td id="t&gt;Nd" class="" style="width:203.6px">0.9759791</td><td id="XA~_" class="" style="width:203.6px">0.06437900956539</td><td id="eq;~" class="" style="width:203.6px">100</td><td id="ci\w" class="" style="width:203.6px">Aprueba</td></tr></tbody></table><h3 id="938bf5e7-5a4e-4ddf-9ffd-28fed478ba00" class="">Skewness</h3><table id="a519a685-fc83-4382-a189-26aceab0952e" class="simple-table"><thead class="simple-table-header"><tr id="7fb54907-1576-456d-aa28-090d15d35362"><th id="EBF{" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px"><strong>Variable</strong></th><th id="eMbV" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px"><strong>Skewness</strong></th><th id="wNHs" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px"><strong>Resultado</strong></th></tr></thead><tbody><tr id="f0a5216f-79a2-4c32-97d6-bffeff22ca46"><th id="EBF{" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px">Ozono</th><td id="eMbV" class="" style="width:339.3333333333333px">1.304683</td><td id="wNHs" class="" style="width:339.3333333333333px">Sesgada a la derecha</td></tr><tr id="cabc2dd1-db06-4b4b-a60b-eb2d8a16651c"><th id="EBF{" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px">Radiación Solar</th><td id="eMbV" class="" style="width:339.3333333333333px">-0.431777</td><td id="wNHs" class="" style="width:339.3333333333333px">Sesgada a la izquierda</td></tr><tr id="9a3d860c-0819-4802-8f6c-4b370c515c87"><th id="EBF{" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px">Viento</th><td id="eMbV" class="" style="width:339.3333333333333px">0.2962775</td><td id="wNHs" class="" style="width:339.3333333333333px">Sesgada a la derecha</td></tr><tr id="c7a4ece3-2cf9-460e-a20f-0dd54caceee2"><th id="EBF{" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px">Temperatura</th><td id="eMbV" class="" style="width:339.3333333333333px">-0.3238602</td><td id="wNHs" class="" style="width:339.3333333333333px">Sesgada a la izquierda</td></tr></tbody></table><h3 id="194f16a6-82ab-487c-a219-b7031a1ff889" class="">Curtosis</h3><table id="319508ac-421f-4016-b5cb-18af76d78ff9" class="simple-table"><thead class="simple-table-header"><tr id="3396f30a-41c5-41ea-92ff-4c9e659f7576"><th id="Y;kr" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px"><strong>Variable</strong></th><th id="d=Ed" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px"><strong>Kurtosis</strong></th><th id="?CUG" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px"><strong>Resultado</strong></th></tr></thead><tbody><tr id="0f5f6c6d-de18-4f90-a040-9c0fb7647efa"><th id="Y;kr" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px">Ozono</th><td id="d=Ed" class="" style="width:339.3333333333333px">1.345277</td><td id="?CUG" class="" style="width:339.3333333333333px">Leptocúrtica</td></tr><tr id="f5d92b0f-bd60-4514-9642-55268ebae56d"><th id="Y;kr" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px">Radiación Solar</th><td id="d=Ed" class="" style="width:339.3333333333333px">-1.04832</td><td id="?CUG" class="" style="width:339.3333333333333px">Platicúrtica</td></tr><tr id="7ed46b2c-82e2-40d7-a3cb-736c919dba48"><th id="Y;kr" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px">Viento</th><td id="d=Ed" class="" style="width:339.3333333333333px">-0.1965224</td><td id="?CUG" class="" style="width:339.3333333333333px">Platicúrtica</td></tr><tr id="6d42291d-60c8-491d-ac76-811e61992add"><th id="Y;kr" class="simple-table-header-color simple-table-header" style="width:339.3333333333333px">Temperatura</th><td id="d=Ed" class="" style="width:339.3333333333333px">-0.5421479</td><td id="?CUG" class="" style="width:339.3333333333333px">Platicúrtica</td></tr></tbody></table></div></details></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Estudio de valores atípicos</summary><div class="indented"><table id="e67efdcf-dcd9-41f0-a677-6b30e328c0ac" class="simple-table"><thead class="simple-table-header"><tr id="4aceed16-f98a-4ceb-8488-e6ee5da3e239"><th id="&lt;&lt;@&lt;" class="simple-table-header-color simple-table-header" style="width:174.33333333333334px"><strong>Variables</strong></th><th id="B~fC" class="simple-table-header-color simple-table-header" style="width:174.33333333333334px"><strong>Q Outliers</strong></th><th id="=hsB" class="simple-table-header-color simple-table-header" style="width:174.33333333333334px"><strong>Ratio outliers</strong></th><th id="LZ&gt;{" class="simple-table-header-color simple-table-header" style="width:174.33333333333334px"><strong>Media outliers</strong></th><th id="ofco" class="simple-table-header-color simple-table-header" style="width:174.33333333333334px"><strong>Media con outliers</strong></th><th id="osPv" class="simple-table-header-color simple-table-header" style="width:174.33333333333334px"><strong>Media sin outliers</strong></th></tr></thead><tbody><tr id="e6e016ec-d28c-49c0-8355-5dd1a2e6ab30"><th id="&lt;&lt;@&lt;" class="simple-table-header-color simple-table-header" style="width:174.33333333333334px">Ozono</th><td id="B~fC" class="" style="width:174.33333333333334px">3</td><td id="=hsB" class="" style="width:174.33333333333334px">3</td><td id="LZ&gt;{" class="" style="width:174.33333333333334px">141.6667</td><td id="ofco" class="" style="width:174.33333333333334px">41.140</td><td id="osPv" class="" style="width:174.33333333333334px">38.030928</td></tr><tr id="981a88e1-b83a-4332-b59b-63409a8f6e6b"><th id="&lt;&lt;@&lt;" class="simple-table-header-color simple-table-header" style="width:174.33333333333334px">RadSol</th><td id="B~fC" class="" style="width:174.33333333333334px">0</td><td id="=hsB" class="" style="width:174.33333333333334px">0</td><td id="LZ&gt;{" class="" style="width:174.33333333333334px"></td><td id="ofco" class="" style="width:174.33333333333334px">187.690</td><td id="osPv" class="" style="width:174.33333333333334px">187.690000</td></tr><tr id="4cd600e8-8e8a-4d40-a165-4d1b0f0eb795"><th id="&lt;&lt;@&lt;" class="simple-table-header-color simple-table-header" style="width:174.33333333333334px">Vient</th><td id="B~fC" class="" style="width:174.33333333333334px">2</td><td id="=hsB" class="" style="width:174.33333333333334px">2</td><td id="LZ&gt;{" class="" style="width:174.33333333333334px">20.4000</td><td id="ofco" class="" style="width:174.33333333333334px">10.206</td><td id="osPv" class="" style="width:174.33333333333334px">9.997959</td></tr><tr id="6cd18e71-a9ac-4d0f-be4f-c266bd99f7d1"><th id="&lt;&lt;@&lt;" class="simple-table-header-color simple-table-header" style="width:174.33333333333334px">Temp</th><td id="B~fC" class="" style="width:174.33333333333334px">0</td><td id="=hsB" class="" style="width:174.33333333333334px">0</td><td id="LZ&gt;{" class="" style="width:174.33333333333334px"></td><td id="ofco" class="" style="width:174.33333333333334px">77.520</td><td id="osPv" class="" style="width:174.33333333333334px">77.520000</td></tr></tbody></table><h3 id="b199ed5e-36e1-439f-aae3-3ec5e24c3cb6" class="">Outliers</h3><div id="ad8c5e81-c3e0-4391-931d-4fd6bf5b5c98" class="column-list"><div id="95f061f7-f3d8-46e9-a2d7-fbba2bdf378e" style="width:100%" class="column"><figure id="0b9aeb56-a512-439f-8e5b-f5d9b867c229" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%209.png"><img style="width:756px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%209.png"/></a></figure><figure id="2d1e85a7-0789-42a4-9395-f383e9a4bbda" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2010.png"><img style="width:509px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2010.png"/></a></figure></div><div id="76d44ce4-8a31-44ab-8586-a95e3a93a8d3" style="width:100%" class="column"><figure id="015d4d1a-b454-4e6d-91f5-3efc699ffbfe" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2011.png"><img style="width:509px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2011.png"/></a></figure><figure id="0f5470ab-ec7a-486a-8376-79dcc7b7229a" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2012.png"><img style="width:740px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2012.png"/></a></figure></div></div><p id="51fb0fe1-3caa-4c46-a9f2-6f1667faee41" class="">Éste muestra que las variables Ozono y Vient contienen valores atípicos. De primera instancia, no parecen cambiar significativamente los datos.</p></div></details><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">Test de correlación</summary><div class="indented"><div id="25e303b3-4960-42bb-bf4f-38965017d669" class="column-list"><div id="9343bfcd-831a-4933-9243-4570a50b1eb7" style="width:100%" class="column"><h3 id="8454511f-b670-4671-b6d4-0e26e56e4ef1" class="">Método de Pearson</h3><figure id="a1511858-594d-49ef-8166-1dfca62b381f" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2013.png"><img style="width:324px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2013.png"/></a></figure><p id="8e0b0d2a-41e8-483a-9e7f-e4c8755be564" class="">Se aprecia que las variables con mayor correlación lineal son Ozono/Temp, con una correlación directa y Ozono/Vient con una correlación inversa. Se aprecia además que las variables RadSol/Vient casi no tienen una correlación.</p></div><div id="9decbcfc-5a45-4c1b-8cab-15dcf903ce32" style="width:100%" class="column"><h3 id="8713841e-11e3-48e2-a841-d8bd55289516" class="">Método de Spearman</h3><figure id="f79b3fce-a52c-4bb3-881d-0e8c5ab82eed" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2014.png"><img style="width:324px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2014.png"/></a></figure><p id="4825d458-f382-439f-a1f7-207c3df5e3a5" class="">En el método de Spearman, se reafirma la correlación encontrada en el método de Pearson.</p><p id="257817ae-d86d-43e9-a2d7-34253bbc02a8" class="">
+</p></div><div id="446160b5-f461-4dcc-8d0f-efb272b3613c" style="width:100%" class="column"><h3 id="3f564536-7eda-4196-887c-64c0c7536fe0" class="">Método de Kendall</h3><figure id="10e6e393-fc92-4c49-b394-eb380b0c8313" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2015.png"><img style="width:754px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2015.png"/></a></figure><p id="d466a450-6459-4d1a-92df-f933675116b9" class="">En el método de Kendall, es menos aparente la relación.</p></div></div></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Método de signos significativos</summary><div class="indented"><div id="b2835d3f-96d2-465d-90ba-369d6eb4fc07" class="column-list"><div id="a1864c88-ebf0-4425-821d-96bbf0cd61b1" style="width:100%" class="column"><h3 id="b86fe98c-5c85-4235-9a7f-e37e6d087506" class="">Método de Pearson</h3><figure id="d48bbfd2-28be-411c-a80f-f0cb8df3d4e6" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2016.png"><img style="width:842px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2016.png"/></a></figure><p id="1c7239f3-bf8e-4ee6-9efc-f253cdb4f8f4" class="">
+</p></div><div id="1efa99ee-c8c5-4576-9f97-d921bcb0ff58" style="width:100%" class="column"><h3 id="edcec904-afee-4c6e-a266-fc15d09f7750" class="">Método de Spearman</h3><figure id="77b8e94e-3022-4046-a395-9fd27388592c" class="image"><a href="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2017.png"><img style="width:833px" src="Ana%CC%81lisis%20de%20datos%20Ana%CC%81lisis%20de%20calidad%20del%20aire%20626eb5ca260945539feac9a67b44503b/image%2017.png"/></a></figure></div></div></div></details><h1 id="a6b8b0f8-c819-4c15-8ee7-8bbb97e221fe" class="">Conclusiones</h1><p id="b6d42fee-49a8-4dae-8309-0689cfc8d6df" class="">Después de realizar la limpieza y organización de los datos en el dataset, se procedió a examinar detalladamente las variables e imputar los datos faltantes. Después, se analizó la distribución de las variables y su correlación, donde se identificaron patrones estadísticamente significativos en las variables del archivo.</p><p id="416a6fb1-ca86-4f14-b181-4292297ddb28" class=""><br/>Es importante destacar que las variables categóricas presentan una distribución uniforme, lo cual indica una representación equilibrada de las distintas categorías en los datos. Sin embargo, se observó que algunas variables numéricas muestran desviaciones de la distribución normal, lo que puede sugerir la presencia de valores atípicos que podrían impactar en la interpretación de los resultados.<br/></p><p id="871f979f-4e8a-43c2-b7ee-52491f2b56d3" class=""><br/>Tras identificar los valores atípicos, se determinó que no tienen un impacto significativo en la variabilidad, por lo que se procedió con la revisión de los datos. Durante este proceso, se observaron correlaciones significativas entre algunas variables, lo que sugiere posibles relaciones y dependencias entre ellas. Específicamente, se encontraron correlaciones entre el ozono y el viento, el ozono y la temperatura, así como entre el viento y la temperatura. Estas correlaciones podrían ser objeto de análisis más detallados en investigaciones futuras para comprender mejor los factores que influyen en la calidad del aire.<br/></p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
