@@ -1,0 +1,686 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Aprendizaje no supervisado: Concentraciones atmosféricas de CO2 </title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(249, 228, 188, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2991a7c6-3a96-4e15-9ac2-5de04d30462a" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">💨</span></div><h1 class="page-title">Aprendizaje no supervisado: Concentraciones atmosféricas de CO2 </h1><p class="page-description"></p></header><div class="page-body"><h1 id="db63b428-fac9-44cd-af56-2d7108de26bf" class=""><strong>Introducción</strong></h1><p id="b0838707-878f-4a9c-8584-789484492b44" class="">El objetivo de este trabajo es aplicar y comparar dos métodos de clustering, el clustering jerárquico y el método K-means, utilizando el dataset &quot;Mauna Loa Atmospheric CO2 Concentration&quot;. Este dataset contiene las concentraciones atmosféricas de CO₂, expresadas en partes por millón (ppm), y se informan en la escala preliminar de fracción molar manométrica de SIO de 1997. La finalidad es entender cómo estos métodos agrupan los datos y evaluar cuál de ellos es más adecuado para identificar patrones en las concentraciones de CO₂ a lo largo de los años.</p><h2 id="5821398f-ddf3-4602-abd7-fecb2b89990d" class="">Dataframe co2</h2><p id="72352cad-f092-4e95-9d54-1f94ffdc98fa" class="">Se seleccionó el dataframe co2: “Mauna Loa Atmospheric CO2 Concentration” correspondiente a las concentraciones atmosféricas de CO₂ expresadas en partes por millón (ppm) y se informan en la escala preliminar de fracción molar manométrica de SIO de 1997.</p><h2 id="bda5c5b2-17ef-40b6-94f8-ea51df846900" class="">Limpieza de datos</h2><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Calidad de datos</summary><div class="indented"><div id="0a902792-c5a6-4608-a730-4b4465a2c736" class="column-list"><div id="46a018cc-d9fc-4fec-ba17-1ed1b66e0aaa" style="width:100%" class="column"><figure id="71ccdfd6-5703-4074-b28c-b12d8b75261c" class="image"><a href="Aprendizaje no supervisado Concentraciones atmosfe/image.png"><img style="width:700px" src="Aprendizaje no supervisado Concentraciones atmosfe/image.png"/></a></figure><p id="e4c8c12f-d770-4e1d-ac0b-920c91a2a972" class="">Todos los valores son de tipo numérico y no se observan valores nulos</p></div><div id="063e5965-b4df-499d-9afd-95db271bb5d0" style="width:100%" class="column"><figure id="101d4edf-8eed-41f0-a242-cd1757043786" class="image"><a href="Aprendizaje no supervisado Concentraciones atmosfe/image 1.png"><img style="width:523px" src="Aprendizaje no supervisado Concentraciones atmosfe/image 1.png"/></a></figure></div></div></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Cálculo del k óptimo</summary><div class="indented"><p id="fc0101fd-7c48-4bc9-825a-650218d8c459" class="">Habiendo limpiado los datos se procede a calcular el k óptimo, valor que será utilizado para los modelos, generando un vector que contiene los valores resultantes de la función kmeans.<br/>En este caso se utiliza el método del codo, que busca el valor k que satisfaga que un incremento de k, no mejore sustancialmente la distancia media intra-cluster.<br/>En el gráfico se puede apreciar que el k óptimo es 2, que es donde la recta cambia significantemente su trayectoria por primera vez.<br/></p><figure id="5de75aa0-5b1a-40e7-8e51-21eb7041fe5c" class="image"><a href="Aprendizaje no supervisado Concentraciones atmosfe/image 2.png"><img style="width:1064px" src="Aprendizaje no supervisado Concentraciones atmosfe/image 2.png"/></a></figure></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Scale</summary><div class="indented"><p id="b85cf8f4-470a-4ce5-b246-3ee20a0ed351" class="">En R, la función scale() se usa para estandarizar (escalar) los datos.</p><p id="0972cf84-34ca-4b96-a454-21d4e3b39e25" class="">datosescalados &lt;- scale(x = co2_wide,<div class="indented"><p id="e1c828f3-18a3-4b7e-9900-d5e37f7e30ac" class=""><em>center = TRUE,</em></p><p id="47501aad-9d2e-442a-bc16-01459c20766b" class=""><em>scale</em></p><p id="32a11b6e-0193-40e1-a5f1-04faadef13d1" class=""><em>= TRUE)</em></p></div></p><p id="66c4f8a8-015d-4f25-bd49-e8ce009e5bcb" class="">center = TRUE: Esto significa que se restará la media de cada columna a cada valor de esa columna.<br/>Es decir, cada valor en una columna se centrará alrededor de 0.<br/>scale = TRUE: Esto significa que cada columna se dividirá por su desviación estándar.<br/>Esto hará que cada columna tenga una desviación estándar de 1.<br/></p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">¿Qué se Gana Escalando los Datos?</summary><div class="indented"><p id="79808153-b3fe-41af-8fab-f98781587302" class="">Comparabilidad<div class="indented"><ul id="2540774b-1ea2-4d8b-bd0c-e409ea6c4e72" class="bulleted-list"><li style="list-style-type:disc">Las variables que están en diferentes escalas se convierten a una escala común.</li></ul><ul id="f57b5cc8-505a-498d-aaca-c43cce15f3a0" class="bulleted-list"><li style="list-style-type:disc">Por ejemplo, si una columna está en metros y otra en gramos, escalarlas las pondrá en una escala comparable.</li></ul></div></p><p id="e5bf4d48-7978-400c-9ca5-a9acf81894bf" class="">Mejora de Algoritmos de Machine Learning<div class="indented"><ul id="c932f18a-69af-42aa-8624-df7d8222bdb9" class="bulleted-list"><li style="list-style-type:disc">Muchos algoritmos de aprendizaje automático, como el clustering k-means y los métodos de regresión, funcionan mejor y más rápido con datos escalados.</li></ul><ul id="0063f888-95a0-438b-b81b-d1246a68c430" class="bulleted-list"><li style="list-style-type:disc">Esto se debe a que estos algoritmos usan distancias para hacer cálculos y las distancias pueden ser dominadas por variables con mayor magnitud si no se escalan.</li></ul></div></p><p id="6bd234ff-9e19-43be-a789-06dc8cfd2cfc" class="">Estabilidad Numérica<div class="indented"><ul id="b3e08649-ce9b-46f6-a855-d8fde2326255" class="bulleted-list"><li style="list-style-type:disc">La escalación puede mejorar la estabilidad numérica de los algoritmos, evitando problemas donde los valores grandes o muy pequeños causan errores de cálculo.</li></ul></div></p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Matriz de distancias</summary><div class="indented"><p id="892dc3bf-b27f-43d0-8311-38fe1dbd1a22" class=""><em># Matriz de distancias</em></p><p id="ee15d832-4b44-4847-b93a-947ab277f2aa" class=""><em>distancia &lt;- dist(x = datosescalados,</em><div class="indented"><p id="941f837d-bc77-439a-8c71-7391ef586284" class=""><em>method = &quot;euclidean&quot;)</em></p></div></p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Motivos para Calcular la Matriz de Distancias</summary><div class="indented"><div id="ee649569-053a-409f-9ffb-fa6e15d14fdb" class="column-list"><div id="bd02a472-1ff2-45a5-be0c-c4f83198bc6b" style="width:62.5%" class="column"><figure id="82f1becb-9089-490c-9764-1b72ef169a7f" class="image"><a href="Aprendizaje no supervisado Concentraciones atmosfe/60a51f3b-3317-4230-8a8e-aae9a522b0a0.png"><img style="width:317.35354927636115px" src="Aprendizaje no supervisado Concentraciones atmosfe/60a51f3b-3317-4230-8a8e-aae9a522b0a0.png"/></a></figure><p id="9f882cef-55bb-426e-ae9d-4f1fa65f3ecd" class="">
+</p></div><div id="c1f8a5d0-5954-490a-b473-a1d1852d2c8b" style="width:118.75%" class="column"><p id="963a2461-565d-45b7-94c8-ccc5c92402e9" class="">Calcular la matriz de distancias es un paso fundamental en muchos métodos de análisis de datos, especialmente en algoritmos de aprendizaje no supervisado y en análisis de agrupamientos (clustering).</p><ol type="1" id="b7b8ab48-8e35-4c5e-ad6e-4de1dc941037" class="numbered-list" start="1"><li><strong>Medir la Similitud entre Observaciones:</strong> La matriz de distancias te permite cuantificar qué tan similares o diferentes son las observaciones en tu conjunto de datos. Una menor distancia entre dos puntos indica mayor similitud, mientras que una mayor distancia indica menor similitud.</li></ol><ol type="1" id="a5d5831b-7371-456b-8d04-085f838c0e74" class="numbered-list" start="2"><li><strong>Fundamento para Algoritmos de Clustering:</strong> Muchos algoritmos de clustering, como k-means y clustering jerárquico, dependen de las distancias entre puntos para formar grupos de observaciones similares. La matriz de distancias es esencial para determinar qué observaciones deben agruparse juntas.</li></ol><ol type="1" id="17714e89-9265-47d0-8bff-9f8e5a739502" class="numbered-list" start="3"><li><strong>Reducción de Dimensionalidad:</strong> Técnicas como el análisis de componentes principales (PCA) pueden beneficiarse del conocimiento de las distancias entre puntos para proyectar los datos en espacios de menor dimensión de manera más efectiva.</li></ol><ol type="1" id="7deeb634-d7ae-432f-83ef-60dcc90ec00a" class="numbered-list" start="4"><li><strong>Visualización:</strong> La matriz de distancias puede utilizarse para crear mapas de calor (heatmaps) y otras visualizaciones que ayudan a entender mejor la estructura y las relaciones en los datos. También es útil en métodos de visualización como el MDS (Multidimensional Scaling) que proyecta datos en un espacio bidimensional o tridimensional manteniendo las distancias relativas.</li></ol></div></div></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Clustering jerárquico.</summary><div class="indented"><p id="6702096c-4039-48b7-9e8c-6461fa4dbb0d" class=""><em>Para generar el clústering, se utiliza el siguiente código:</em></p><p id="78fb183a-6500-460c-ac9c-c6b8f71230df" class=""><em>clusteringjerarquico &lt;- hclust(d =distancia,</em><div class="indented"><p id="25f676b7-a154-448d-8bf5-71310732edd8" class=""><em>method= &quot;complete&quot;)</em></p></div></p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Dendograma</summary><div class="indented"><p id="c38c2730-4aa7-4171-8a35-17e88b98659f" class="">A simple vista, se visualiza que existen dos grupos principales, de la década de los 90 y de años anteriores. El número máximo de niveles apreciable es 6, y el mínimo es 4.</p><figure id="0d65f270-8129-4ffa-b1bf-b52f33ae29a0" class="image"><a href="Aprendizaje no supervisado Concentraciones atmosfe/image 3.png"><img style="width:1064px" src="Aprendizaje no supervisado Concentraciones atmosfe/image 3.png"/></a></figure></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Visualización de Grupos en el Dendrograma</summary><div class="indented"><p id="ead49b03-b24e-4419-8295-0654c475e33f" class="">Para mostrar grupos de datos dentro de un dendrograma, se puede utilizar la función fviz_dend del paquete factoextra. Esta función permite visualizar los resultados de un clustering jerárquico de una manera clara y comprensible, destacando los diferentes grupos formados. Se utiliza k=2, siendo este el k óptimo obtenido anteriormente.</p><ul id="d122fae9-9f1a-4177-b65f-a52b9d5e2fb7" class="bulleted-list"><li style="list-style-type:disc">El grupo amarillo incluye los años desde 1959 hasta 1986.</li></ul><ul id="19c8dd6b-60a7-49cb-b3a0-b529e9265be2" class="bulleted-list"><li style="list-style-type:disc">El grupo azul incluye los años desde 1987 hasta 1997.</li></ul><p id="0f95dc53-9d63-46e1-91de-d13d9b9de598" class="">La separación de los grupos puede indicar un cambio significativo en los niveles de CO2 alrededor del año 1986-1987.</p><figure id="44bce268-de13-4b14-8a05-a9fce5f97782" class="image"><a href="Aprendizaje no supervisado Concentraciones atmosfe/image 4.png"><img style="width:1064px" src="Aprendizaje no supervisado Concentraciones atmosfe/image 4.png"/></a></figure></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">K- Means</summary><div class="indented"><p id="eb190b41-34fd-4cb1-90fd-d44f590126fa" class="">Utilizando los mismos datos obtenidos anteriormente (el dataframe co2_wide y el k óptimo = 2), se plantea generar con el método de k-means otro modelo con la solución completa.<br/>Se tomaron los valores promedio anuales para comparar el mes con la menor y mayor cantidad de CO2 ppm, los que fueron abril con el menor y septiembre con el mayor.<br/>Obteniendo el siguiente gráfico<br/></p><figure id="db634584-d0f4-458f-ae43-538f153e0335" class="image"><a href="Aprendizaje no supervisado Concentraciones atmosfe/image 5.png"><img style="width:1064px" src="Aprendizaje no supervisado Concentraciones atmosfe/image 5.png"/></a></figure><p id="3dc4fb51-5d15-494e-9410-8a8168494321" class="">Se observa una correlación directa entre el aumento de las emisiones de CO2 y el paso de los años, incluso al comparar los meses más extremos en su resultado. También se observa un solapamiento mínimo entre los datos.</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Heatmap</summary><div class="indented"><figure id="2101c518-2546-419a-8147-690ea03678ad" class="image"><a href="Aprendizaje no supervisado Concentraciones atmosfe/image 6.png"><img style="width:1064px" src="Aprendizaje no supervisado Concentraciones atmosfe/image 6.png"/></a></figure></div></details><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">Comparación del modelo clustering jerárquico y K-means</summary><div class="indented"><table id="8e5914fd-ad72-4065-8a95-48a05e97668d" class="simple-table"><thead class="simple-table-header"><tr id="043b6053-7709-468c-b264-240b0ed33e39"><th id="b\kB" class="simple-table-header-color simple-table-header" style="width:348.6666666666667px"></th><th id="rkv}" class="simple-table-header-color simple-table-header" style="width:348.6666666666667px"><strong>Clustering jerárquico</strong></th><th id="\k:d" class="simple-table-header-color simple-table-header" style="width:348.6666666666667px"><strong>K-means</strong></th></tr></thead><tbody><tr id="34dfbc7d-541b-444b-871a-5a5c7845bc99"><th id="b\kB" class="simple-table-header-color simple-table-header" style="width:348.6666666666667px"><strong>Algoritmos de agrupamiento</strong></th><td id="rkv}" class="" style="width:348.6666666666667px">Dendograma</td><td id="\k:d" class="" style="width:348.6666666666667px">Clústeres</td></tr><tr id="4817592d-381c-48b9-8526-92bbddaf415a"><th id="b\kB" class="simple-table-header-color simple-table-header" style="width:348.6666666666667px"><strong>Criterio de agrupamiento</strong></th><td id="rkv}" class="" style="width:348.6666666666667px">Matriz de distancias</td><td id="\k:d" class="" style="width:348.6666666666667px">WCSS</td></tr><tr id="db0bc9b3-c651-4dda-ba15-b84f5d7c8087"><th id="b\kB" class="simple-table-header-color simple-table-header" style="width:348.6666666666667px"><strong>Flexibilidad y escalabilidad</strong></th><td id="rkv}" class="" style="width:348.6666666666667px">Intuitivo, pero puede ser computacionalmente intensivo.</td><td id="\k:d" class="" style="width:348.6666666666667px">Más eficiente con grandes conjuntos de datos, pero necesita una correcta selección de k.</td></tr></tbody></table></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Criterio aplicado por cada modelo para dividir los datos en grupos</summary><div class="indented"><div id="ba946747-218f-4672-a579-3771944b2484" class="column-list"><div id="191d6009-773c-48ca-ba72-d84b0a0088f3" style="width:112.5%" class="column"><h3 id="672b056c-51f2-4772-a0e9-688ebe113341" class="">Clustering jerárquico</h3><p id="d013298f-a76e-4dec-bf85-1e5bf0557f89" class="">Matriz de distancias</p><ul id="b67a095b-482b-4a43-9771-0e190c1c217b" class="bulleted-list"><li style="list-style-type:disc">Se calculó utilizando la distancia euclidiana, que mide la similitud entre los diferentes años basándose en sus concentraciones mensuales de CO₂.</li></ul><p id="fec667c4-e3a1-4e62-b342-81935fb02f50" class="">Algoritmo de enlace</p><ul id="4e291623-eb1c-4117-a7f3-c94c746be74f" class="bulleted-list"><li style="list-style-type:disc">El método de enlace completo se usó para formar clústeres, maximizando la distancia mínima entre puntos de diferentes clústeres.</li></ul><p id="e7f175f5-27ec-4ad2-83e3-1db48b80319a" class="">Número de clústeres</p><ul id="77a13cc8-41fe-4b53-a38a-65e220851347" class="bulleted-list"><li style="list-style-type:disc">Se determinó visualizando el dendrograma y cortándolo en el nivel que produce dos clústeres principales, correspondientes a las décadas de los 90 y los años anteriores.</li></ul></div><div id="0c59e201-9f33-409d-8687-58f2b17f6862" style="width:87.49999999999999%" class="column"><h3 id="1f6eb238-7586-4e46-a516-70205acfe7bb" class="">K-means</h3><p id="2a58d02f-2cdd-487a-94db-f01f5a30a4f3" class="">Selección del número de clústeres (k)</p><ul id="76d08cba-2223-432a-b7f8-427e70f982c3" class="bulleted-list"><li style="list-style-type:disc">Utilizó el método del codo para determinar el valor óptimo de k, que se encontró que era 2.</li></ul><p id="34a70da1-cdfb-41a4-b220-327b5c643b41" class="">Asignación de clústeres</p><ul id="f9ed648a-bf59-484e-b7dc-82eaa63ac8bc" class="bulleted-list"><li style="list-style-type:disc">Los datos estandarizados fueron agrupados en dos clústeres, minimizando la WCSS dentro de cada clúster. El algoritmo iteró hasta que la asignación de puntos a clústeres se estabilizó.</li></ul><p id="fb96fa6e-2f18-4e65-9c5f-80bc29aed74e" class="">
+</p></div></div></div></details><h1 id="6a8b8459-6673-4b2a-8e47-4ad7337ef840" class="">Conclusiones</h1><p id="6705a9e0-290b-4a22-af9c-d847369eabcd" class="">Ambos métodos, clustering jerárquico y K-means, identificaron dos clústeres principales en los datos de concentración de CO₂, correspondientes aproximadamente a los años anteriores y posteriores a 1986-1987. Esto sugiere un cambio significativo en las concentraciones de CO₂ alrededor de este período.</p><ul id="83eadb2c-f14d-4506-89ca-7b18e3331d51" class="bulleted-list"><li style="list-style-type:disc">Clustering jerárquico: Proporciona una visión jerárquica de los datos, útil para explorar diferentes niveles de agrupamiento. Es más intuitivo y no requiere una suposición inicial sobre el número de clústeres.</li></ul><ul id="3683dd8a-47d0-41de-9a4b-85a6b957a5c1" class="bulleted-list"><li style="list-style-type:disc">K-means: Es más eficiente para grandes conjuntos de datos y permite especificar directamente el número de clústeres, aunque depende de una selección adecuada de k.</li></ul><p id="edad63db-3155-4b10-b925-32a26ce9eebf" class="">En resumen, ambos métodos son valiosos para el análisis de datos de concentración de CO₂, ofreciendo diferentes perspectivas y ventajas. La elección del método depende del tamaño del conjunto de datos y de la necesidad de una estructura jerárquica o de una partición directa en clústeres.</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
